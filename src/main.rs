@@ -5,6 +5,7 @@ extern crate test;
 use test::Bencher;
 
 use std::thread::Thread;
+use std::os::num_cpus;
 
 use std::rand::distributions::{IndependentSample, Range};
 use std::rand;
@@ -57,9 +58,10 @@ fn parallel_pi(samples: usize, num_threads: usize) -> f64
 fn main()
 {
     let iterations = DEFAULT_NUMBER_OF_SAMPLES;
-    let pi_estimate = parallel_pi(iterations,
-                                  DEFAULT_NUMER_OF_THREADS);
-    println!("Pi after {} iterations: {}", iterations, pi_estimate);
+    let num_threads = num_cpus();
+    let pi_estimate = parallel_pi(iterations, num_threads);
+    println!("Pi after {} iterations using {} threads: {}",
+             iterations, num_threads, pi_estimate);
 }
 
 #[test]
@@ -94,6 +96,6 @@ fn bench_calculate_parallel_pi(b: &mut Bencher)
 {
     b.iter(|| {
         parallel_pi(DEFAULT_NUMBER_OF_SAMPLES,
-                    DEFAULT_NUMER_OF_THREADS);
+                    num_cpus());
     })
 }
