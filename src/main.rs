@@ -1,11 +1,18 @@
 /// Based on 'Go concurrency is not parallelism'
 /// www.soroushjp.com/2015/02/07/go-concurrency-is-not-parallelism-real-world-lessons-with-monte-carlo-simulations/
 
+extern crate test;
+use test::Bencher;
+
 use std::rand::distributions::{IndependentSample, Range};
 use std::rand;
 use std::num::Float;
 
-fn pi(samples: u32) -> f64
+// The number of samples to take to estimate Pi.
+static DEFAULT_NUMBER_OF_SAMPLES: usize = 1_000_000;
+
+// Estimate Pi by taking random samples.
+fn pi(samples: usize) -> f64
 {
     let mut inside_circle = 0;
     let mut rng = rand::thread_rng();
@@ -26,16 +33,24 @@ fn pi(samples: u32) -> f64
 
 fn main()
 {
-    let iterations = 10_000_000;
+    let iterations = DEFAULT_NUMBER_OF_SAMPLES;
     let pi_estimate = pi(iterations);
     println!("Pi after {} iterations: {}", iterations, pi_estimate);
 }
 
 #[test]
-fn calculate_pi()
+fn test_calculate_pi()
 {
     let expected_pi = 3.1415;
     let delta = 0.01;
-    let estimate = pi(1_000_000);
+    let estimate = pi(DEFAULT_NUMBER_OF_SAMPLES);
     assert!((estimate - expected_pi).abs() <= delta);
+}
+
+#[bench]
+fn bench_calculate_pi(b: &mut Bencher)
+{
+    b.iter(|| {
+        pi(DEFAULT_NUMBER_OF_SAMPLES)
+    })
 }
