@@ -41,12 +41,13 @@ fn parallel_pi(samples: usize, num_threads: usize) -> f64
 {
     let samples_per_thread = samples / num_threads;
 
-    //let guards: Vec<_> = (0..num_threads).map(|_| {
-    let sum = (0..num_threads).map(|_| {
+    let guards: Vec<_> = (0..num_threads).map(|_| {
         Thread::scoped(move || {
             pi(samples_per_thread)
         })
-    }).fold(0.0, |sum, g|
+    }).collect();
+
+    let sum = guards.into_iter().fold(0.0, |sum, g|
             match g.join()
             {
                 Ok(estimate) => sum + estimate,
