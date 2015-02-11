@@ -1,5 +1,5 @@
-/// Based on 'Go concurrency is not parallelism'
-/// www.soroushjp.com/2015/02/07/go-concurrency-is-not-parallelism-real-world-lessons-with-monte-carlo-simulations/
+//! Based on 'Go concurrency is not parallelism'
+//! www.soroushjp.com/2015/02/07/go-concurrency-is-not-parallelism-real-world-lessons-with-monte-carlo-simulations/
 
 extern crate test;
 use test::Bencher;
