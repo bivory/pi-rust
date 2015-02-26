@@ -46,7 +46,7 @@ fn parallel_pi(samples: usize, num_threads: usize) -> f64
     }).collect();
 
     let sum = guards.into_iter()
-                    .fold(0.0, |sum, g| g.join().unwrap_or(0.0) + sum);
+                    .fold(0.0, |sum, g| g.join() + sum);
     sum / (num_threads as f64)
 }
 
