@@ -3,3 +3,7 @@
 name = "pi"
 version = "0.0.1"
 authors = ["Bryan Ivory <bivory@gmail.com>"]
+
+[dependencies]
+num_cpus = "0.2.5"
+rand = "0.3.8"
